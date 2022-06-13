@@ -6,6 +6,8 @@ import '../providers/usuarios.dart';
 import 'conta_pendente.dart';
 import 'home.dart';
 
+import '../screens/nova_conta.dart';
+
 class Entrar extends StatefulWidget {
   @override
   _EntrarState createState() => _EntrarState();
@@ -16,6 +18,16 @@ class _EntrarState extends State<Entrar> {
   final _form = GlobalKey<FormState>();
   var _editedLogin = Login(nomeUsuario: '', senha: '');
   var _isLoading = false;
+
+  void selectPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return NovaConta();
+        },
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -137,10 +149,36 @@ class _EntrarState extends State<Entrar> {
                               senha: value.toString());
                         },
                       ),
-                      RaisedButton(
-                        child: Text('Entrar'),
-                        onPressed: () => _saveForm(),
+                      Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        width: double.infinity,
+                        color: Colors.black87,
+                        alignment: Alignment.center,
+                        child: ListTile(
+                          title: Center(
+                            child: const Text("Entrar",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          onTap: () => _saveForm(),
+                        ),
                       ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        width: double.infinity,
+                        color: Colors.black87,
+                        alignment: Alignment.center,
+                        child: ListTile(
+                          title: Center(
+                            child: const Text("Criar conta",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          onTap: () => selectPage(context),
+                        ),
+                      )
                     ],
                   )),
             ),

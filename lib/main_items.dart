@@ -24,10 +24,6 @@ class MainItems extends StatelessWidget {
             Center(
               child: Entrar(),
             ),
-            RaisedButton(
-              child: Text('Criar conta'),
-              onPressed: () => selectPage(context),
-            ),
           ],
         ));
   }

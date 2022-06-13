@@ -25,7 +25,8 @@ class _NovaContaState extends State<NovaConta> {
       estado: '',
       uf: '',
       nomeUsuario: '',
-      senha: '');
+      senha: '',
+      idConta: '');
   var _isLoading = false;
 
   @override
@@ -111,7 +112,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -131,7 +133,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -150,7 +153,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -169,7 +173,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -189,7 +194,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -208,7 +214,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -227,7 +234,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -246,7 +254,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -265,7 +274,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: value.toString(),
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -284,7 +294,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: value.toString(),
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -303,7 +314,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: value.toString(),
-                                senha: _editedUsuario.senha);
+                                senha: _editedUsuario.senha,
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         TextFormField(
@@ -325,7 +337,8 @@ class _NovaContaState extends State<NovaConta> {
                                 estado: _editedUsuario.estado,
                                 uf: _editedUsuario.uf,
                                 nomeUsuario: _editedUsuario.nomeUsuario,
-                                senha: value.toString());
+                                senha: value.toString(),
+                                idConta: _editedUsuario.idConta);
                           },
                         ),
                         RaisedButton(
