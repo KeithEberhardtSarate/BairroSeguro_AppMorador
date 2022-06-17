@@ -1,4 +1,5 @@
 import 'package:bairroseguro_morador/notification_service.dart';
+import 'package:bairroseguro_morador/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePage(),
+        routes: Routes.list,
+        initialRoute: Routes.initial,
+        navigatorKey: Routes.navigatorKey,
       ),
     );
   }
