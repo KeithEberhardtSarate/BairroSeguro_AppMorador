@@ -1,3 +1,5 @@
+import 'package:bairroseguro_morador/routes.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CustomNotification {
@@ -34,13 +36,14 @@ class NotificationService {
       const InitializationSettings(
         android: android,
       ),
-      onSelectNotification: _onselectNotification,
+      onSelectNotification: _onSelectNotification,
     );
   }
 
-  _onselectNotification(String? payload) {
+  _onSelectNotification(String? payload) {
     if (payload != null && payload.isNotEmpty) {
-      // Fazer as rotas
+      Navigator.of(Routes.navigatorKey!.currentContext!)
+          .pushReplacementNamed(payload);
     }
   }
 
