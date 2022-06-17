@@ -1,3 +1,4 @@
+import 'package:bairroseguro_morador/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,14 +15,24 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<NotificationService>(
+            create: (context) => NotificationService())
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider.value(value: Usuarios())],
+      providers: [
+        ChangeNotifierProvider.value(value: Usuarios()),
+      ],
       child: MaterialApp(
         title: 'BairroSeguro',
         theme: ThemeData(

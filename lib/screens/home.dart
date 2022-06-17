@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:bairroseguro_morador/notification_service.dart';
 import 'package:bairroseguro_morador/providers/solicitacao.dart';
 import 'package:bairroseguro_morador/providers/solicitacoes.dart';
 import 'package:bairroseguro_morador/providers/usuario.dart';
@@ -61,6 +62,12 @@ class _HomeState extends State<Home> {
 
   like() async {
     await _likesRef.set(ServerValue.increment(1));
+    Provider.of<NotificationService>(context, listen: false).showNotification(
+        CustomNotification(
+            id: 1,
+            title: 'Teste',
+            body: 'Acesse o App!',
+            payload: '/notificacao'));
   }
 
   void dispose() {
