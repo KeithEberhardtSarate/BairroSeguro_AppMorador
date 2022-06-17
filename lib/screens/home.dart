@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:bairroseguro_morador/providers/solicitacao.dart';
 import 'package:bairroseguro_morador/providers/solicitacoes.dart';
 import 'package:bairroseguro_morador/providers/usuario.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _likes = 0;
+  late final DatabaseReference _likesRef;
+  late StreamSubscription<DatabaseEvent> _likesSubscription;
+
   var _isLoading = false;
   var usuarioLogado = Usuario(
       nome: '',
@@ -29,6 +35,38 @@ class _HomeState extends State<Home> {
       nomeUsuario: '',
       senha: '',
       idConta: '');
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    _likesRef = FirebaseDatabase.instance.ref('likes');
+
+    try {
+      final likeSnapshot = await _likesRef.get();
+      _likes = likeSnapshot.value as int;
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+
+    _likesSubscription = _likesRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        _likes = (event.snapshot.value ?? 0) as int;
+      });
+    });
+  }
+
+  like() async {
+    await _likesRef.set(ServerValue.increment(1));
+  }
+
+  void dispose() {
+    _likesSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -151,6 +189,8 @@ class _HomeState extends State<Home> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  Text(_likes.toString()),
+                  IconButton(onPressed: like, icon: const Icon(Icons.thumb_up)),
                   Container(
                     margin: const EdgeInsets.only(top: 5),
                     width: double.infinity,
