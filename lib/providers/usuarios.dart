@@ -90,7 +90,7 @@ class Usuarios with ChangeNotifier {
     return usuarioLogado;
   }
 
-  Future<void> addSolicitacao(Solicitacao solicitacao) async {
+  Future<Map<dynamic, String>> addSolicitacao(Solicitacao solicitacao) async {
     try {
       final response = await http.post(
           Uri.parse('https://bairroseguro.herokuapp.com/solicitacao'),
@@ -103,6 +103,9 @@ class Usuarios with ChangeNotifier {
           }));
 
       notifyListeners();
+
+      final data = json.decode(response.body);
+      return {'_id': data['_id'].toString()};
     } catch (e) {
       print(e);
       throw e;

@@ -17,9 +17,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _likes = 0;
-  late final DatabaseReference _likesRef;
-  late StreamSubscription<DatabaseEvent> _likesSubscription;
+  dynamic _solicitacao = {
+    '_id': '',
+    'tipo': '',
+    'idConta': '',
+    'status': '',
+  };
+  late DatabaseReference _solicitacoesRef;
+  late StreamSubscription<DatabaseEvent> _solicitacoesSubscription;
 
   var _isLoading = false;
   var usuarioLogado = Usuario(
@@ -44,34 +49,52 @@ class _HomeState extends State<Home> {
   }
 
   init() async {
-    _likesRef = FirebaseDatabase.instance.ref('likes');
+    _solicitacoesRef = FirebaseDatabase.instance.ref('solicitacoes');
 
     try {
-      final likeSnapshot = await _likesRef.get();
-      _likes = likeSnapshot.value as int;
+      final solicitacoesSnapshot =
+          await _solicitacoesRef.child(usuarioLogado.idConta).get();
+
+      if (solicitacoesSnapshot.exists) {
+        _solicitacao = solicitacoesSnapshot.value as dynamic;
+      }
     } catch (err) {
       debugPrint(err.toString());
     }
 
-    _likesSubscription = _likesRef.onValue.listen((DatabaseEvent event) {
+    _solicitacoesSubscription =
+        _solicitacoesRef.onValue.listen((DatabaseEvent event) {
       setState(() {
-        _likes = (event.snapshot.value ?? 0) as int;
+        if (event.snapshot.value != null) {
+          _solicitacao = (event.snapshot.value as Map)[usuarioLogado.idConta];
+
+          if (_solicitacao['status'] == 'aceita') {
+            Provider.of<NotificationService>(context, listen: false)
+                .showNotification(CustomNotification(
+                    id: 1,
+                    title: 'Escolta aceita',
+                    body: 'Agente em deslocamento',
+                    payload: '/default'));
+          }
+        }
       });
     });
   }
 
-  like() async {
-    await _likesRef.set(ServerValue.increment(1));
-    Provider.of<NotificationService>(context, listen: false).showNotification(
-        CustomNotification(
-            id: 1,
-            title: 'Teste',
-            body: 'Acesse o App!',
-            payload: '/notificacao'));
+  solicitarEscolta(_id) async {
+    _solicitacoesRef =
+        FirebaseDatabase.instance.ref('solicitacoes/${usuarioLogado.idConta}');
+
+    _solicitacao['_id'] = _id;
+    _solicitacao['idConta'] = usuarioLogado.idConta;
+    _solicitacao['tipo'] = 'escolta';
+    _solicitacao['status'] = 'solicitada';
+
+    await _solicitacoesRef.set(_solicitacao);
   }
 
   void dispose() {
-    _likesSubscription.cancel();
+    _solicitacoesSubscription.cancel();
     super.dispose();
   }
 
@@ -90,8 +113,11 @@ class _HomeState extends State<Home> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Usuarios>(context, listen: false).addSolicitacao(
-          Solicitacao(idConta: usuarioLogado.idConta, tipo: "escolta"));
+      var novaEscolta = await Provider.of<Usuarios>(context, listen: false)
+          .addSolicitacao(
+              Solicitacao(idConta: usuarioLogado.idConta, tipo: "escolta"));
+
+      solicitarEscolta(novaEscolta['_id'].toString());
     } catch (e) {
       print(e);
       await showDialog(
@@ -129,6 +155,10 @@ class _HomeState extends State<Home> {
         );
       });
     }
+  }
+
+  _cancelarEscolta() {
+    print('Implementar');
   }
 
   @override
@@ -196,8 +226,23 @@ class _HomeState extends State<Home> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text(_likes.toString()),
-                  IconButton(onPressed: like, icon: const Icon(Icons.thumb_up)),
+                  Container(
+                    child: _solicitacao != null &&
+                            _solicitacao['status'] == 'solicitada'
+                        ? Text('Escolta solicitada, aguardando agente',
+                            style: TextStyle(fontSize: 20))
+                        : Text(''),
+                  ),
+                  Container(
+                    child: _solicitacao != null &&
+                            _solicitacao['status'] == 'aceita'
+                        ? Text('Agente em deslocamento',
+                            style: TextStyle(fontSize: 20))
+                        : Text(''),
+                  ),
+                  // IconButton(
+                  //     onPressed: () => solicitarEscolta(1234),
+                  //     icon: const Icon(Icons.thumb_up)),
                   Container(
                     margin: const EdgeInsets.only(top: 5),
                     width: double.infinity,
@@ -205,12 +250,21 @@ class _HomeState extends State<Home> {
                     alignment: Alignment.center,
                     child: ListTile(
                       title: Center(
-                        child: const Text("Solicitar Escolta",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
+                        child: _solicitacao != null &&
+                                _solicitacao['status'] == 'solicitada'
+                            ? const Text("Cancelar escolta",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))
+                            : const Text("Solicitar Escolta",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
                       ),
-                      onTap: () => _novaEscolta(),
+                      onTap: () => _solicitacao != null &&
+                              _solicitacao['status'] == 'solicitada'
+                          ? _cancelarEscolta()
+                          : _novaEscolta(),
                     ),
                   )
                 ],

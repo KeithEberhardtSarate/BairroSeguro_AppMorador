@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'BairroSeguro',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.blueGrey,
         ),
         routes: Routes.list,
         initialRoute: Routes.initial,
