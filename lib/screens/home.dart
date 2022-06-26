@@ -19,6 +19,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   dynamic _solicitacao = {
     '_id': '',
+    'idAgente': '',
     'tipo': '',
     'idConta': '',
     'status': '',
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
         FirebaseDatabase.instance.ref('solicitacoes/${usuarioLogado.idConta}');
 
     _solicitacao['_id'] = _id;
+    _solicitacao['idAgente'] = '';
     _solicitacao['idConta'] = usuarioLogado.idConta;
     _solicitacao['tipo'] = 'escolta';
     _solicitacao['status'] = 'solicitada';
@@ -106,6 +108,16 @@ class _HomeState extends State<Home> {
     setState(() {
       usuarioLogado = usuarioLogadoProvided;
     });
+  }
+
+  _handleSolicitacaoClick() {
+    if (_solicitacao['status'] == 'solicitada') {
+      _cancelarEscolta();
+    } else if (_solicitacao['status'] == 'aceita') {
+      _finalizarEscolta();
+    } else {
+      _novaEscolta();
+    }
   }
 
   Future<void> _novaEscolta() async {
@@ -142,7 +154,7 @@ class _HomeState extends State<Home> {
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text('Escolta solicitada com sucesso'),
-            content: Text('Um agente está a caminho'),
+            content: Text('Aguardando agente'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
@@ -158,6 +170,10 @@ class _HomeState extends State<Home> {
   }
 
   _cancelarEscolta() {
+    print('Implementar');
+  }
+
+  _finalizarEscolta() {
     print('Implementar');
   }
 
@@ -236,7 +252,7 @@ class _HomeState extends State<Home> {
                   Container(
                     child: _solicitacao != null &&
                             _solicitacao['status'] == 'aceita'
-                        ? Text('Agente em deslocamento',
+                        ? Text('Escolta aceita, agente em deslocamento',
                             style: TextStyle(fontSize: 20))
                         : Text(''),
                   ),
@@ -250,21 +266,29 @@ class _HomeState extends State<Home> {
                     alignment: Alignment.center,
                     child: ListTile(
                       title: Center(
-                        child: _solicitacao != null &&
-                                _solicitacao['status'] == 'solicitada'
-                            ? const Text("Cancelar escolta",
+                          child: Column(
+                        children: [
+                          if (_solicitacao != null &&
+                              _solicitacao['status'] == 'solicitada') ...[
+                            const Text("Cancelar solicitação",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold))
-                            : const Text("Solicitar Escolta",
+                          ] else if (_solicitacao != null &&
+                              _solicitacao['status'] == 'aceita') ...[
+                            const Text("Finalizar solicitação",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                      ),
-                      onTap: () => _solicitacao != null &&
-                              _solicitacao['status'] == 'solicitada'
-                          ? _cancelarEscolta()
-                          : _novaEscolta(),
+                                    fontWeight: FontWeight.bold))
+                          ] else ...[
+                            const Text("Solicitar escolta",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))
+                          ]
+                        ],
+                      )),
+                      onTap: () => _handleSolicitacaoClick(),
                     ),
                   )
                 ],
