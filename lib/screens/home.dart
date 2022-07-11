@@ -23,6 +23,8 @@ class _HomeState extends State<Home> {
     'tipo': '',
     'idConta': '',
     'status': '',
+    'lat': '',
+    'lon': '',
   };
   late DatabaseReference _solicitacoesRef;
   late StreamSubscription<DatabaseEvent> _solicitacoesSubscription;
@@ -91,6 +93,8 @@ class _HomeState extends State<Home> {
     _solicitacao['idConta'] = usuarioLogado.idConta;
     _solicitacao['tipo'] = 'escolta';
     _solicitacao['status'] = 'solicitada';
+    _solicitacao['lat'] = usuarioLogado.lat;
+    _solicitacao['lon'] = usuarioLogado.lon;
 
     await _solicitacoesRef.set(_solicitacao);
   }

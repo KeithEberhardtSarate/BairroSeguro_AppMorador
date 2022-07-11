@@ -22,7 +22,9 @@ class Usuarios with ChangeNotifier {
       uf: '',
       nomeUsuario: '',
       senha: '',
-      idConta: '');
+      idConta: '',
+      lat: '',
+      lon: '');
 
   Future<void> addUsuario(Usuario usuario) async {
     try {
@@ -72,13 +74,17 @@ class Usuarios with ChangeNotifier {
 
       usuarioLogado.nome = data['nome'].toString();
       usuarioLogado.idConta = data['idConta'].toString();
+      usuarioLogado.lat = data['lat'].toString();
+      usuarioLogado.lon = data['lon'].toString();
       return {
         'isAutenticated': data['isAutenticated'].toString(),
         'isContaAtiva': data['isContaAtiva'].toString(),
         'nome': data['nome'].toString(),
         'email': data['email'].toString(),
         'telefone': data['telefone'].toString(),
-        'idConta': data['idConta'].toString()
+        'idConta': data['idConta'].toString(),
+        'lat': data['lat'].toString(),
+        'lon': data['lon'].toString()
       };
     } catch (e) {
       print(e);

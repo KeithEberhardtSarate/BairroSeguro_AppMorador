@@ -14,6 +14,8 @@ class Usuario with ChangeNotifier {
   String nomeUsuario;
   String senha;
   String tipo;
+  String lat;
+  String lon;
   String idConta;
 
   Usuario({
@@ -30,6 +32,8 @@ class Usuario with ChangeNotifier {
     required this.nomeUsuario,
     required this.senha,
     this.tipo = 'morador',
+    this.lat = '',
+    this.lon = '',
     required this.idConta,
   });
 }
